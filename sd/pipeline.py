@@ -67,7 +67,7 @@ def generate(prompt,
 
         to_idle(clip) # move the clip off VRAM when its done
 
-        if sampler_name = "ddpm":
+        if sampler_name == "ddpm":
             sampler = DDPMSampler(generator)
             sampler.set_inference_steps(n_steps)
         else:
