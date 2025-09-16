@@ -100,7 +100,7 @@ class UNET_AttentionBlock(nn.Module):
 
         residue_short = x
 
-        x = layernorm_1(x)
+        x = self.layernorm_1(x)
         self.attention_1(x)
 
         x += residue_short 
@@ -109,7 +109,7 @@ class UNET_AttentionBlock(nn.Module):
 
         residue_short = x
 
-        x = layernorm_2(x)
+        x = self.layernorm_2(x)
         self.attention_2(x, context)
 
         x += residue_short 
@@ -118,7 +118,7 @@ class UNET_AttentionBlock(nn.Module):
 
         residue_short = x
 
-        x = layernorm_3(x)
+        x = self.layernorm_3(x)
 
         x, gate = self.linear_gegelu_1(x).chunk(2, dim=-1)
         x = x * F.gelu(gate)
@@ -146,7 +146,7 @@ class UpSample(nn.Module):
 
 class SwitchSequential(nn.Sequential): # switch case cover for all the tensors that get put in, simplfier
 
-    def forward(x, context, time):
+    def forward(self, x, context, time):
 
         for layer in self:
             if isinstance(layer, UNET_AttentionBlock):
@@ -237,6 +237,7 @@ class UNET_OutputLayer(nn.Module):
 class Diffusion(nn.Module):
 
     def __init__(self):
+        super().__init__()
 
         self.time_embedding = TimeEmbedding(320)
         self.unet = UNET()
@@ -255,5 +256,3 @@ class Diffusion(nn.Module):
         output = self.final(output) # Bs, 320, h/8, h/8 -> Bs, 4, h/8, h/8
 
         return output
-
-
