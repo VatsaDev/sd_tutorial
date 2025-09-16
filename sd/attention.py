@@ -8,7 +8,7 @@ class SelfAttention(nn.Module):
     def __init__(self, n_heads, d_embed, in_proj_bias=True, out_proj_bias=True):
         super().__init__()
 
-        self.in_proj = nn.Linear(d_embed, 3*embed, bias=in_proj_bias)
+        self.in_proj = nn.Linear(d_embed, 3*d_embed, bias=in_proj_bias)
         self.out_proj = nn.Linear(d_embed, d_embed, bias=out_proj_bias)
 
         self.n_heads = n_heads
@@ -103,3 +103,4 @@ class CrossAttention(nn.Module):
         output = self.out_proj(output) 
 
         return output 
+
