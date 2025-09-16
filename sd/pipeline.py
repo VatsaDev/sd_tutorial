@@ -78,6 +78,8 @@ def generate(
         else:
             raise ValueError("Unknown sampler value %s. ")
 
+        sampler.set_inference_timesteps(n_inference_steps)
+
         latents_shape = (1, 4, LATENTS_HEIGHT, LATENTS_WIDTH)
 
         if input_image:
